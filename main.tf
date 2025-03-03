@@ -12,14 +12,14 @@ resource "mongodbatlas_cluster" "cluster-test" {
   name         = var.cluster_name
 
   provider_name               = "TENANT" # free-tier
-#   provider_name               = "AWS"
-  backing_provider_name       = "AWS" # no need for this line if using non-free-tier
+#   provider_name               = "AWS" 
+  backing_provider_name       = "AWS" 
   provider_region_name        = "US_EAST_1"
-  provider_instance_size_name = "M0" # free-tier instance size
+  provider_instance_size_name = "M0"
 
   auto_scaling_disk_gb_enabled = false
   mongo_db_major_version       = "8.0"  
-  disk_size_gb                 = 0.5 # free-tier
+  disk_size_gb                 = 0.5 
 
   cluster_type = "REPLICASET"
 
@@ -42,6 +42,6 @@ module "mongodb_user" {
   username    = var.username
   password    = var.password
   iam_username = var.iam_username
-  role_name   = var.role_name # Use "readAnyDatabase", "atlasAdmin", or "customRole"
-  role_name_iam = var.role_name_iam # Use "readAnyDatabase", "atlasAdmin", or "customRole"
+  role_name   = var.role_name 
+  role_name_iam = var.role_name_iam 
 }
