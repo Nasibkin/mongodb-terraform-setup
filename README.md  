@@ -1,59 +1,15 @@
-Here’s a comprehensive `README.md` file for your Terraform project. This file provides an overview of the project, instructions for setup, and details about the configuration.
-
----
-
 # Terraform MongoDB Atlas Project
 
-This Terraform project automates the creation of a MongoDB Atlas project, cluster, and database users. It includes support for both password-based and AWS IAM-based authentication.
-
-## Table of Contents
-1. [Overview](#overview)
-2. [Prerequisites](#prerequisites)
-3. [Setup](#setup)
-4. [Configuration](#configuration)
-5. [Usage](#usage)
-6. [Outputs](#outputs)
-7. [Modules](#modules)
-8. [Troubleshooting](#troubleshooting)
-9. [Contributing](#contributing)
-10. [License](#license)
-
----
-
-## Overview
-
-This project uses Terraform to provision the following resources in MongoDB Atlas:
-- A MongoDB Atlas project.
-- A MongoDB Atlas cluster (free-tier or advanced).
-- Database users:
-  - One user authenticated via username and password.
-  - One user authenticated via AWS IAM role.
-- A custom database role.
-
-The project is modular, with the database user creation logic encapsulated in a reusable module.
+This Terraform project automates the creation of a MongoDB Atlas project, cluster, and database users. It supports both password-based and AWS IAM-based authentication.
 
 ---
 
 ## Prerequisites
 
-Before using this Terraform project, ensure you have the following:
-
-1. **MongoDB Atlas Account**:
-   - Sign up for a MongoDB Atlas account at [https://www.mongodb.com/cloud/atlas](https://www.mongodb.com/cloud/atlas).
-   - Generate API keys for programmatic access:
-     - Go to **Organization Access Manager > API Keys**.
-     - Create a new API key and note down the public and private keys.
-
-2. **AWS Account** (for IAM authentication):
-   - Create an AWS IAM role for MongoDB Atlas.
-   - Note down the IAM role ARN.
-
-3. **Terraform**:
-   - Install Terraform from [https://www.terraform.io/downloads.html](https://www.terraform.io/downloads.html).
-   - Ensure Terraform is added to your system's PATH.
-
-4. **Terraform Providers**:
-   - The project uses the `mongodbatlas` provider. Ensure it is installed by running `terraform init`.
+Before you begin, make sure you have:
+1. A **MongoDB Atlas account** and API keys (public and private).
+2. An **AWS account** (if using IAM authentication) with an IAM role ARN.
+3. **Terraform** installed on your machine.
 
 ---
 
@@ -65,7 +21,7 @@ Before using this Terraform project, ensure you have the following:
    cd terraform-mongodb
    ```
 
-2. Create a `terraform.tfvars` file in the root directory with the following variables:
+2. Create a `terraform.tfvars` file in the root directory with your configuration:
    ```hcl
    mongodbatlas_public_key  = "your_public_key"
    mongodbatlas_private_key = "your_private_key"
@@ -86,35 +42,14 @@ Before using this Terraform project, ensure you have the following:
 
 ---
 
-## Configuration
-
-### Variables
-
-The following variables are used in this project:
-
-| Variable                  | Description                                                                 | Type   | Default Value       |
-|---------------------------|-----------------------------------------------------------------------------|--------|---------------------|
-| `mongodbatlas_public_key` | MongoDB Atlas Public Key                                                    | string | -                   |
-| `mongodbatlas_private_key`| MongoDB Atlas Private Key                                                   | string | -                   |
-| `mongodbatlas_org_id`     | MongoDB Atlas Organization ID                                               | string | -                   |
-| `project_name`            | Name of the MongoDB Atlas project                                           | string | -                   |
-| `cluster_name`            | Name of the MongoDB Atlas cluster                                           | string | -                   |
-| `username`                | Username for the password-authenticated database user                       | string | `"myuser"`          |
-| `password`                | Password for the password-authenticated database user                       | string | `"mypassword"`      |
-| `iam_username`            | AWS IAM role ARN for the IAM-authenticated database user                    | string | -                   |
-| `role_name`               | Role for the password-authenticated user (`readAnyDatabase`, `atlasAdmin`)  | string | `"customRole"`      |
-| `role_name_iam`           | Role for the IAM-authenticated user (`readAnyDatabase`, `atlasAdmin`)       | string | `"readAnyDatabase"` |
-
----
-
 ## Usage
 
-1. **Plan the Terraform Configuration**:
+1. **Plan the Configuration**:
    ```bash
    terraform plan
    ```
 
-2. **Apply the Terraform Configuration**:
+2. **Apply the Configuration**:
    ```bash
    terraform apply
    ```
@@ -126,47 +61,26 @@ The following variables are used in this project:
 
 ---
 
-## Outputs
+## What’s Created
 
-The following outputs are available after applying the Terraform configuration:
-
-| Output Name                  | Description                                      |
-|------------------------------|--------------------------------------------------|
-| `project_id`                 | MongoDB Atlas Project ID                         |
-| `cluster_id`                 | MongoDB Atlas Cluster ID                         |
-| `custom_role_name`           | Name of the custom database role                 |
-| `user_with_password_username`| Username of the password-authenticated user      |
-| `user_with_iam_username`     | Username of the IAM-authenticated user           |
+This project creates the following resources in MongoDB Atlas:
+- A **project**.
+- A **cluster** (free-tier or advanced).
+- Two **database users**:
+  - One authenticated via username and password.
+  - One authenticated via AWS IAM role.
+- A **custom database role**.
 
 ---
 
-## Modules
+## Outputs
 
-### `mongodb_user` Module
-
-This module creates database users and a custom role. It supports:
-- Password-authenticated users.
-- IAM-authenticated users.
-- Custom database roles.
-
-#### Inputs
-
-| Variable                  | Description                                                                 |
-|---------------------------|-----------------------------------------------------------------------------|
-| `project_id`              | MongoDB Atlas Project ID                                                    |
-| `username`                | Username for the password-authenticated user                                |
-| `password`                | Password for the password-authenticated user                                |
-| `iam_username`            | AWS IAM role ARN for the IAM-authenticated user                             |
-| `role_name`               | Role for the password-authenticated user                                    |
-| `role_name_iam`           | Role for the IAM-authenticated user                                         |
-
-#### Outputs
-
-| Output Name                  | Description                                      |
-|------------------------------|--------------------------------------------------|
-| `custom_role_name`           | Name of the custom database role                 |
-| `user_with_password_username`| Username of the password-authenticated user      |
-| `user_with_iam_username`     | Username of the IAM-authenticated user           |
+After running `terraform apply`, you’ll get the following outputs:
+- **Project ID**: The ID of the MongoDB Atlas project.
+- **Cluster ID**: The ID of the MongoDB Atlas cluster.
+- **Custom Role Name**: The name of the custom database role.
+- **Password User**: The username of the password-authenticated user.
+- **IAM User**: The username of the IAM-authenticated user.
 
 ---
 
@@ -176,28 +90,12 @@ This module creates database users and a custom role. It supports:
 
 1. **Invalid AWS IAM ARN**:
    - Ensure the `iam_username` variable is set to a valid AWS IAM role ARN.
-   - Verify that the IAM role is correctly configured in AWS.
 
 2. **API Key Errors**:
-   - Ensure the `mongodbatlas_public_key` and `mongodbatlas_private_key` are correct.
-   - Check that the API keys have the necessary permissions.
+   - Double-check your `mongodbatlas_public_key` and `mongodbatlas_private_key`.
 
 3. **Cluster Creation Failures**:
-   - Ensure the cluster configuration (e.g., region, instance size) is valid.
-   - Check the MongoDB Atlas logs for more details.
+   - Verify the cluster configuration (e.g., region, instance size) is valid.
 
 ---
 
-## Contributing
-
-Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes.
-
----
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
----
-
-Let me know if you need further assistance!
