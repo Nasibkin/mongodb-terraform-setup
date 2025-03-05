@@ -50,9 +50,63 @@ module "mongodb_user" {
   project_id               = mongodbatlas_project.projectA.id
   mongodbatlas_public_key  = var.mongodbatlas_public_key
   mongodbatlas_private_key = var.mongodbatlas_private_key
-  username                 = var.username
-  password                 = var.password
-  iam_username             = var.iam_username
-  role_name                = var.role_name
-  role_name_iam            = var.role_name_iam
+  user_password_users      = var.user_password_users
+  iam_users                = var.iam_users
+}
+
+module "backup_schedule_and_snapshot" {
+  source = "./modules/backup_schedule_and_snapshot"
+  mongodbatlas_public_key  = var.mongodbatlas_public_key
+  mongodbatlas_private_key = var.mongodbatlas_private_key
+
+  snapshots = {
+    snapshot1 = {
+      project_id        = mongodbatlas_project.projectA.id
+      cluster_name      = mongodbatlas_cluster.clusterA.name
+      description       = "Daily snapshot"
+      retention_in_days = 6
+    }
+    snapshot2 = {
+      project_id        = mongodbatlas_project.projectA.id
+      cluster_name      = mongodbatlas_cluster.clusterA.name
+      description       = "Weekly snapshot"
+      retention_in_days = 30
+    }
+  }
+
+  backup_schedules = {
+  bs1 = {
+    project_id   = mongodbatlas_project.projectA.id
+    cluster_name = mongodbatlas_cluster.clusterA.name
+    policy_item_hourly = {
+      frequency_interval = 1
+      retention_unit     = "days"
+      retention_value    = 7 
+    }
+    policy_item_daily = {
+      frequency_interval = 1
+      retention_unit     = "days"
+      retention_value    = 7
+    }
+  }
+  bs2 = {
+    project_id   = mongodbatlas_project.projectA.id
+    cluster_name = mongodbatlas_cluster.clusterA.name
+    policy_item_hourly = {
+      frequency_interval = 1
+      retention_unit     = "days"
+      retention_value    = 7 
+    }
+    policy_item_weekly = {
+      frequency_interval = 1
+      retention_unit     = "weeks"
+      retention_value    = 4
+    }
+    policy_item_monthly = {
+      frequency_interval = 1
+      retention_unit     = "months"
+      retention_value    = 12
+    }
+  }
+}
 }

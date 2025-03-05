@@ -33,25 +33,29 @@ resource "mongodbatlas_custom_db_role" "custom_role" {
 }
 
 resource "mongodbatlas_database_user" "user_with_password" {
-  username           = var.username
-  password           = var.password
+  for_each = { for idx, user in var.user_password_users : idx => user }
+
+  username           = each.value.username
+  password           = each.value.password
   project_id         = var.project_id
   auth_database_name = "admin"
 
   roles {
-    role_name     = var.role_name == "customRole" ? mongodbatlas_custom_db_role.custom_role.role_name : var.role_name
+    role_name     = each.value.role_name == "customRole" ? mongodbatlas_custom_db_role.custom_role.role_name : each.value.role_name
     database_name = "admin"
   }
 }
 
 resource "mongodbatlas_database_user" "user_with_iam" {
+  for_each = { for idx, user in var.iam_users : idx => user }
+
   project_id         = var.project_id
-  username           = var.iam_username
+  username           = each.value.username
   auth_database_name = "$external"
 
   aws_iam_type = "ROLE"
   roles {
-    role_name     = var.role_name_iam == "customRole" ? mongodbatlas_custom_db_role.custom_role.role_name : var.role_name_iam
+    role_name     = each.value.role_name == "customRole" ? mongodbatlas_custom_db_role.custom_role.role_name : each.value.role_name
     database_name = "admin"
   }
 }

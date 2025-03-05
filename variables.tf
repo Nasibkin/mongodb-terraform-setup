@@ -20,28 +20,19 @@ variable "cluster_name" {
   type = string
 }
 
-variable "username" {
-  type    = string
-  default = "myuser"
+variable "user_password_users" {
+  type = list(object({
+    username  = string
+    password  = string
+    role_name = string
+  }))
+  default = []
 }
 
-variable "password" {
-  type    = string
-  default = "mypassword"
-}
-
-variable "iam_username" {
-  type = string
-}
-
-variable "role_name" {
-  description = "Use readAnyDatabase, atlasAdmin, or customRole"
-  type        = string
-  default     = "customRole"
-}
-
-variable "role_name_iam" {
-  description = "Role to assign to the database user (e.g., readAnyDatabase, atlasAdmin, customRole)"
-  type        = string
-  default     = "readAnyDatabase"
+variable "iam_users" {
+  type = list(object({
+    username  = string
+    role_name = string
+  }))
+  default = []
 }

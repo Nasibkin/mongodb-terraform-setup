@@ -10,9 +10,12 @@ output "custom_role_name" {
   value = module.mongodb_user.custom_role_name
 }
 
-output "database_users" {
-  value = {
-    user_with_password = module.mongodb_user.user_with_password_username
-    user_with_iam      = module.mongodb_user.user_with_iam_username
-  }
+output "password_users" {
+  description = "Usernames of the password-authenticated users"
+  value       = module.mongodb_user.user_with_password_usernames
+}
+
+output "iam_users" {
+  description = "Usernames of the IAM-authenticated users"
+  value       = module.mongodb_user.user_with_iam_usernames
 }
