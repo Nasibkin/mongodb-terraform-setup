@@ -64,13 +64,13 @@ module "backup_schedule_and_snapshot" {
       project_id        = mongodbatlas_project.projectA.id
       cluster_name      = mongodbatlas_cluster.clusterA.name
       description       = "Daily snapshot"
-      retention_in_days = 6
+      retention_in_days = 7
     }
     snapshot2 = {
       project_id        = mongodbatlas_project.projectA.id
       cluster_name      = mongodbatlas_cluster.clusterA.name
       description       = "Weekly snapshot"
-      retention_in_days = 30
+      retention_in_days = 31
     }
   }
 
@@ -86,7 +86,7 @@ module "backup_schedule_and_snapshot" {
     policy_item_daily = {
       frequency_interval = 1
       retention_unit     = "days"
-      retention_value    = 7
+      retention_value    = 8
     }
   }
   bs2 = {
@@ -95,7 +95,7 @@ module "backup_schedule_and_snapshot" {
     policy_item_hourly = {
       frequency_interval = 1
       retention_unit     = "days"
-      retention_value    = 7 
+      retention_value    = 9 
     }
     policy_item_weekly = {
       frequency_interval = 1
