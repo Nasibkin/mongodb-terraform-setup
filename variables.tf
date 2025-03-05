@@ -4,40 +4,40 @@ variable "mongodbatlas_public_key" {
 }
 
 variable "mongodbatlas_private_key" {
-  type        = string
-  sensitive   = true
+  type      = string
+  sensitive = true
 }
 
 variable "mongodbatlas_org_id" {
-  type        = string
+  type = string
 }
 
 variable "project_name" {
-  type        = string
+  type = string
 }
 
 variable "cluster_name" {
-  type        = string
+  type = string
 }
 
 variable "username" {
-  type        = string
-  default     = "myuser"
+  type    = string
+  default = "myuser"
 }
 
 variable "password" {
-  type        = string
-  default     = "mypassword"
+  type    = string
+  default = "mypassword"
 }
 
 variable "iam_username" {
-  type        = string
+  type = string
 }
 
 variable "role_name" {
   description = "Use readAnyDatabase, atlasAdmin, or customRole"
   type        = string
-  default     = "customRole"  
+  default     = "customRole"
 }
 
 variable "role_name_iam" {
