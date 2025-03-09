@@ -46,12 +46,29 @@ resource "mongodbatlas_cluster" "clusterA" {
 }
 
 module "mongodb_user" {
-  source                   = "./modules/mongodb_user"
-  project_id               = mongodbatlas_project.projectA.id
+  source = "./modules/mongodb_user"
+
   mongodbatlas_public_key  = var.mongodbatlas_public_key
   mongodbatlas_private_key = var.mongodbatlas_private_key
-  user_password_users      = var.user_password_users
-  iam_users                = var.iam_users
+  project_id               = mongodbatlas_project.projectA.id
+
+  custom_roles = var.custom_roles
+
+  iam_users = var.iam_users
+
+  user_password_users = [
+    {
+      username           = "test"
+      password           = "dummypassword"
+      auth_database_name = "admin"
+      roles = [
+        {
+          role_name     = "readWrite"
+          database_name = "admin"
+        }
+      ]
+    }
+  ]
 }
 
 module "backup_schedule_and_snapshot" {
@@ -95,7 +112,7 @@ module "backup_schedule_and_snapshot" {
     policy_item_hourly = {
       frequency_interval = 1
       retention_unit     = "days"
-      retention_value    = 9 
+      retention_value    = 7 
     }
     policy_item_weekly = {
       frequency_interval = 1

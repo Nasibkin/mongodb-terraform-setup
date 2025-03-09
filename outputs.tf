@@ -1,3 +1,4 @@
+# Root module's outputs.tf
 output "project_id" {
   value = mongodbatlas_project.projectA.id
 }
@@ -6,8 +7,9 @@ output "cluster_name" {
   value = mongodbatlas_cluster.clusterA.name
 }
 
-output "custom_role_name" {
-  value = module.mongodb_user.custom_role_name
+output "custom_role_names" {
+  description = "Names of the custom database roles"
+  value       = module.mongodb_user.custom_role_names
 }
 
 output "password_users" {

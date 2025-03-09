@@ -1,6 +1,6 @@
-output "custom_role_name" {
-  description = "Name of the custom database role"
-  value       = mongodbatlas_custom_db_role.custom_role.role_name
+output "custom_role_names" {
+  description = "Names of the custom database roles"
+  value       = { for k, role in mongodbatlas_custom_db_role.custom_role : k => role.role_name }
 }
 
 output "user_with_password_usernames" {

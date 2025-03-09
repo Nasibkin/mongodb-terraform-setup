@@ -31,8 +31,36 @@ variable "user_password_users" {
 
 variable "iam_users" {
   type = list(object({
-    username  = string
-    role_name = string
+    username           = string
+    auth_database_name = string
+    aws_iam_type       = string
+    roles = list(object({
+      role_name     = string
+      database_name = string
+    }))
+    labels = optional(list(object({
+      key   = string
+      value = string
+    })))
+    scopes = optional(list(object({
+      name = string
+      type = string
+    })))
   }))
   default = []
+}
+
+variable "custom_roles" {
+  type = map(object({
+    role_name     = string
+    database_name = string
+    actions = list(object({
+      action = string
+      resources = list(object({
+        collection_name = string
+        database_name   = string
+      }))
+    }))
+  }))
+  default = {}
 }
