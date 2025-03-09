@@ -22,9 +22,13 @@ variable "cluster_name" {
 
 variable "user_password_users" {
   type = list(object({
-    username  = string
-    password  = string
-    role_name = string
+    username           = string
+    password           = string
+    auth_database_name = string
+    roles = list(object({
+      role_name     = string
+      database_name = string
+    }))
   }))
   default = []
 }

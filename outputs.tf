@@ -1,4 +1,3 @@
-# Root module's outputs.tf
 output "project_id" {
   value = mongodbatlas_project.projectA.id
 }

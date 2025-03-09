@@ -52,18 +52,51 @@ module "mongodb_user" {
   mongodbatlas_private_key = var.mongodbatlas_private_key
   project_id               = mongodbatlas_project.projectA.id
 
-  custom_roles = var.custom_roles
+  custom_roles = {
+    application_rw = {
+      role_name     = "ReadWriteapp"
+      database_name = "example-db"
+      actions_key   = "application_rw" 
+    },
+    mongosync_bypass = {
+      role_name     = "bypass"
+      database_name = "example-db"
+      actions_key   = "mongosync_bypass" 
+    }
+  }
 
   iam_users = var.iam_users
 
   user_password_users = [
     {
-      username           = "test"
-      password           = "dummypassword"
+      username           = "userA"
+      password           = "passwordA"
       auth_database_name = "admin"
       roles = [
         {
-          role_name     = "readWrite"
+          role_name     = "ReadWriteapp" 
+          database_name = "admin"
+        }
+      ]
+    },
+    {
+      username           = "userB"
+      password           = "passwordB"
+      auth_database_name = "admin"
+      roles = [
+        {
+          role_name     = "bypass" 
+          database_name = "admin"
+        }
+      ]
+    },
+    {
+      username           = "userC"
+      password           = "passwordC"
+      auth_database_name = "admin"
+      roles = [
+        {
+          role_name     = "read" 
           database_name = "admin"
         }
       ]

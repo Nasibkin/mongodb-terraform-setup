@@ -17,13 +17,7 @@ variable "custom_roles" {
   type = map(object({
     role_name     = string
     database_name = string
-    actions = list(object({
-      action = string
-      resources = list(object({
-        collection_name = string
-        database_name   = string
-      }))
-    }))
+    actions_key   = string 
   }))
   default = {}
 }

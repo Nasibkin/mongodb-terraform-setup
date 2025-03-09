@@ -5,7 +5,7 @@ resource "mongodbatlas_custom_db_role" "custom_role" {
   role_name  = each.value.role_name
 
   dynamic "actions" {
-    for_each = each.value.actions
+    for_each = lookup(local.custom_roles_actions, each.value.actions_key, [])
     content {
       action = actions.value.action
       resources {
