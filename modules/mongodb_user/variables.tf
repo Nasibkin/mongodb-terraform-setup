@@ -13,30 +13,19 @@ variable "project_id" {
   type        = string
 }
 
-variable "username" {
-  description = "Username for the database user"
-  type        = string
+variable "user_password_users" {
+  type = list(object({
+    username = string
+    password = string
+    role_name = string
+  }))
+  default = []
 }
 
-variable "password" {
-  description = "Password for the database user"
-  type        = string
-  sensitive   = true
-}
-
-variable "iam_username" {
-  description = "Username for the IAM-authenticated database user"
-  type        = string
-}
-
-variable "role_name" {
-  description = "Role to assign to the database user (e.g., readAnyDatabase, atlasAdmin, customRole)"
-  type        = string
-  default     = "readAnyDatabase"
-}
-
-variable "role_name_iam" {
-  description = "Role to assign to the database user (e.g., readAnyDatabase, atlasAdmin, customRole)"
-  type        = string
-  default     = "readAnyDatabase"
+variable "iam_users" {
+  type = list(object({
+    username = string
+    role_name = string
+  }))
+  default = []
 }

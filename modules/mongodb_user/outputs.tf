@@ -3,12 +3,12 @@ output "custom_role_name" {
   value       = mongodbatlas_custom_db_role.custom_role.role_name
 }
 
-output "user_with_password_username" {
-  description = "Username of the password-authenticated user"
-  value       = mongodbatlas_database_user.user_with_password.username
+output "user_with_password_usernames" {
+  description = "Usernames of the password-authenticated users"
+  value       = { for k, user in mongodbatlas_database_user.user_with_password : k => user.username }
 }
 
-output "user_with_iam_username" {
-  description = "Username of the IAM-authenticated user"
-  value       = mongodbatlas_database_user.user_with_iam.username
+output "user_with_iam_usernames" {
+  description = "Usernames of the IAM-authenticated users"
+  value       = { for k, user in mongodbatlas_database_user.user_with_iam : k => user.username }
 }
